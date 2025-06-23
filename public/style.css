@@ -271,6 +271,85 @@ body {
     display: block; /* Para que ocupe su propia línea */
 }
 
+/* --- Estilos para el formulario de contacto --- */
+form {
+    background-color: var(--light-bg);
+    padding: 30px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    max-width: 500px; /* Limitar ancho del formulario */
+    margin: 30px auto; /* Centrar el formulario */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+form p {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block; /* Cada label en su propia línea */
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+form input[type="text"],
+form input[type="email"],
+form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: var(--font-primary);
+    font-size: 1em;
+    color: var(--text-color);
+    background-color: var(--white);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); /* Sombra de enfoque sutil */
+    outline: none; /* Eliminar el contorno del navegador */
+}
+
+form textarea {
+    resize: vertical; /* Permitir redimensionar verticalmente */
+    min-height: 120px;
+}
+
+form button[type="submit"] {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%; /* Botón de ancho completo */
+}
+
+form button[type="submit"]:hover,
+form button[type="submit"]:focus {
+    background-color: #0056b3; /* Un azul más oscuro al pasar el ratón */
+    transform: translateY(-2px); /* Pequeño efecto al pasar el ratón */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Para ocultar el honeypot de Netlify sin display: none (a veces interfiere con netlify) */
+.hidden {
+    position: absolute;
+    left: -9999px;
+    top: -9999px;
+    visibility: hidden;
+}
+
+
 /* --- Adaptabilidad para Móviles --- */
 @media (max-width: 768px) {
     .container {
@@ -305,5 +384,10 @@ body {
 
     .category-list, .movie-thumbnail-list, .curated-list-items {
         grid-template-columns: 1fr; /* Una sola columna en móviles */
+    }
+
+    form {
+        margin: 20px auto;
+        padding: 20px;
     }
 }
