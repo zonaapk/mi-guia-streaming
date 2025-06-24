@@ -1,23 +1,20 @@
 /* --- ESTILOS PARA LA CUADRÍCULA DE MINIATURAS (v2.1 CORREGIDO) --- */
 
-/* El contenedor de la cuadrícula */
 .thumbnail-grid {
     display: grid;
-    /* Crea columnas flexibles que tienen un mínimo de 220px y un máximo de 1fr (fracción del espacio) */
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 25px; /* Espacio entre las tarjetas */
+    gap: 25px;
     padding: 0;
     margin-top: 20px;
-    margin-bottom: 40px; /* Espacio extra al final de la sección */
+    margin-bottom: 40px;
 }
 
-/* La tarjeta individual */
 .card {
     background-color: #2e2e2e;
     border-radius: 8px;
     overflow: hidden;
-    display: flex; /* Activa Flexbox para alinear contenido */
-    flex-direction: column; /* Apila los elementos (imagen y título) verticalmente */
+    display: flex;
+    flex-direction: column;
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     border: 1px solid #444;
 }
@@ -32,16 +29,15 @@
     color: #fff;
     display: flex;
     flex-direction: column;
-    height: 100%; /* El enlace ocupa toda la altura de la tarjeta */
+    height: 100%;
 }
 
-/* Contenedor de la imagen para forzar la proporción */
 .card .image-container {
     width: 100%;
-    /* Truco para forzar el aspecto 16:9 en los collages y un aspecto de póster en los otros */
     aspect-ratio: 2 / 3; /* Proporción de póster por defecto */
     overflow: hidden;
     border-bottom: 3px solid #007bff;
+    background-color: #1c1c1c;
 }
 
 /* A los collages específicamente les damos la proporción 16:9 */
@@ -51,8 +47,8 @@
 
 .card img {
     width: 100%;
-    height: 100%; /* La imagen llena el contenedor */
-    object-fit: cover; /* Clave: Recorta la imagen para que llene el espacio sin deformarse */
+    height: 100%;
+    object-fit: cover; /* Recorta la imagen para que llene el espacio sin deformarse */
     display: block;
 }
 
@@ -61,8 +57,7 @@
     margin: 0;
     font-size: 1rem;
     text-align: center;
-    /* Esto asegura que todos los títulos tengan el mismo espacio, alineando las tarjetas */
-    flex-grow: 1; 
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
