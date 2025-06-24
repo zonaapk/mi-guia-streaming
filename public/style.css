@@ -2,7 +2,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root { --primary-color: #007bff; --dark-bg: #212529; --light-bg: #f8f9fa; --white: #ffffff; --text-color: #343a40; --border-color: #e9ecef; --font-primary: 'Roboto', sans-serif; --header-font: 'Montserrat', sans-serif; }
 body { font-family: var(--font-primary); line-height: 1.7; background-color: var(--light-bg); color: var(--text-color); }
-.container { max-width: 960px; margin: 30px auto; padding: 30px; background-color: var(--white); border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+.container { max-width: 1140px; margin: 30px auto; padding: 30px; background-color: var(--white); border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
 
 /* --- Cabecera y Navegación --- */
 .header { background-color: var(--dark-bg); color: var(--white); padding: 20px 0; text-align: center; }
@@ -14,32 +14,26 @@ body { font-family: var(--font-primary); line-height: 1.7; background-color: var
 .navbar a { color: var(--white); text-decoration: none; font-weight: 600; padding: 8px 12px; border-radius: 5px; transition: background-color 0.3s ease; }
 .navbar a:hover { background-color: rgba(255,255,255,0.2); }
 
-/* --- Estilos de Página de Película Individual --- */
-.recommendation h1 { font-size: 2.5em; margin-bottom: 20px; color: var(--primary-color); text-align: center; }
-.recommendation h2 { font-size: 1.8em; margin-top: 35px; margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px; }
+/* --- Página de Película Individual --- */
+.recommendation h1 { font-size: 2.2em; margin-bottom: 20px; color: var(--primary-color); }
+.recommendation h2 { font-size: 1.6em; margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px; }
 .recommendation img { max-width: 300px; height: auto; border-radius: 8px; margin: 0 auto 25px auto; display: block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
 .quick-info { display: flex; flex-wrap: wrap; gap: 20px; background-color: #f0f0f0; padding: 15px; border-radius: 8px; margin-bottom: 30px; justify-content: space-around; }
 
-/* --- CUADRÍCULA DE MINIATURAS (HOMEPAGE) - CÓDIGO FINAL --- */
+/* --- NUEVA CUADRÍCULA DE MINIATURAS UNIFICADA --- */
 .card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 25px;
     margin: 20px 0 40px 0;
 }
 .card {
-    background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    background-color: #fff; border: 1px solid #ddd;
+    border-radius: 8px; overflow: hidden;
+    display: flex; flex-direction: column;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid #ddd;
 }
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
+.card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
 .card a { text-decoration: none; color: var(--text-color); display: flex; flex-direction: column; height: 100%; }
 .card .image-container {
     width: 100%;
@@ -47,22 +41,22 @@ body { font-family: var(--font-primary); line-height: 1.7; background-color: var
     aspect-ratio: 2 / 3; /* Proporción vertical por defecto (pósters) */
     overflow: hidden;
 }
-/* Proporción panorámica para los collages */
 .card.collage-card .image-container {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 9; /* Proporción panorámica para collages */
 }
 .card img { width: 100%; height: 100%; object-fit: cover; }
 .card h3 {
-    padding: 15px;
-    margin: 0;
-    font-size: 1rem;
-    text-align: center;
-    flex-grow: 1; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 70px;
+    padding: 15px; margin: 0; font-size: 1rem; text-align: center;
+    flex-grow: 1; display: flex; align-items: center; justify-content: center; min-height: 70px;
 }
 
-/* --- FOOTER --- */
+/* --- Estilos para Formulario y Footer --- */
+form { max-width: 500px; margin: 30px auto; }
 .footer { text-align: center; padding: 20px; background-color: var(--dark-bg); color: var(--secondary-color); margin-top: 30px; }
+@media (max-width: 768px) {
+    .container { margin: 15px; padding: 20px; }
+    .header h1 { font-size: 2em; }
+    .navbar ul { flex-direction: column; }
+    .navbar li { margin: 5px 0; }
+    .card-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
