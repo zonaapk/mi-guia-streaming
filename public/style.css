@@ -1,87 +1,50 @@
-# generador.py (v5.0 - Definitivo)
-import json, os, re, unicodedata, random
+/* --- Reseteo Básico y Estilos Globales --- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+    --primary-color: #007bff; --dark-bg: #212529; --light-bg: #f8f9fa; --white: #ffffff;
+    --text-color: #343a40; --border-color: #e9ecef;
+    --font-primary: 'Roboto', sans-serif; --header-font: 'Montserrat', sans-serif;
+}
+body { font-family: var(--font-primary); line-height: 1.7; background-color: var(--light-bg); color: var(--text-color); }
+.container { max-width: 1140px; margin: 30px auto; padding: 30px; background-color: var(--white); border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
 
-def slugify(value):
-    value=str(value);value=unicodedata.normalize('NFKD',value).encode('ascii','ignore').decode('ascii');value=value.lower();value=re.sub(r'[^\w\s-]','',value).strip();value=re.sub(r'[-\s]+','-',value);return value
+/* --- Cabecera, Navegación y Footer --- */
+.header { background-color: var(--dark-bg); color: var(--white); padding: 20px 0; text-align: center; }
+.header a { text-decoration: none; color: inherit; }
+.navbar { background-color: var(--primary-color); padding: 10px 0; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.navbar ul { list-style: none; display: flex; justify-content: center; }
+.navbar li { margin: 0 15px; }
+.navbar a { color: var(--white); text-decoration: none; font-weight: 600; padding: 8px 12px; }
+.footer { text-align: center; padding: 20px; background-color: var(--dark-bg); color: #6c757d; margin-top: 30px; }
 
-# --- CONFIGURACIÓN ---
-DB_FILE='database.json'; LISTS_FILE='listas.json'; TEMPLATE_FILE='template.html'
-OUTPUT_DIR=os.path.join('mi-guia-streaming','public'); MOVIES_DIR=os.path.join(OUTPUT_DIR,'peliculas'); LISTS_DIR=os.path.join(OUTPUT_DIR,'listas'); CATEGORIES_DIR=os.path.join(OUTPUT_DIR,'categorias_paginas')
-COMMON_PLATFORMS=["Netflix","Amazon Prime Video","Max","Disney+","Star+"]
+/* --- Página de Película Individual --- */
+.recommendation h1 { font-size: 2.2em; margin-bottom: 20px; color: var(--primary-color); text-align: center; }
+.recommendation h2 { font-size: 1.6em; margin-top: 30px; margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px; text-align: center; }
+.recommendation img { max-width: 300px; height: auto; border-radius: 8px; margin: 0 auto 25px auto; display: block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+.quick-info { display: flex; flex-wrap: wrap; gap: 20px; background-color: #f0f0f0; padding: 15px; border-radius: 8px; margin-bottom: 30px; justify-content: space-around; }
 
-# --- FUNCIONES AUXILIARES PARA CONSTRUIR HTML ---
-def generate_full_html_page(body_content, title, description, path_to_root=""):
-    """Construye una página HTML completa, asegurando que las rutas relativas sean correctas."""
-    head = f"""<head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title} | Mi Guía Streaming</title><meta name="description" content="{description}">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400;600&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{path_to_root}style.css">
-</head>"""
-    navbar = f"""<nav class="navbar"><ul><li><a href="{path_to_root}index.html">Inicio</a></li><li><a href="{path_to_root}categorias.html">Categorías</a></li><li><a href="{path_to_root}contacto.html">Contacto</a></li></ul></nav>"""
-    header = f"""<header class="header"><a href="{path_to_root}index.html" class="home-link"><h1>Mi Guía Streaming</h1></a></header>"""
-    footer = """<footer class="footer"><p>&copy; 2025 - Mi Guía Streaming.</p></footer>"""
-    return f"<!DOCTYPE html><html lang='es'>{head}<body>{header}{navbar}{body_content}{footer}</body></html>"
+/* --- CUADRÍCULA DE MINIATURAS (HOMEPAGE) --- */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 25px;
+    margin: 20px 0 40px 0;
+}
+.card {
+    background-color: #fff; border: 1px solid #ddd;
+    border-radius: 8px; overflow: hidden;
+    display: flex; flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+.card a { text-decoration: none; color: var(--text-color); display: flex; flex-direction: column; height: 100%; }
+.card .image-container { width: 100%; background-color: #e9ecef; aspect-ratio: 2 / 3; overflow: hidden; }
+.card.collage-card .image-container { aspect-ratio: 16 / 9; }
+.card img { width: 100%; height: 100%; object-fit: cover; }
+.card h3 { padding: 15px; margin: 0; font-size: 1rem; text-align: center; flex-grow: 1; display: flex; align-items: center; justify-content: center; min-height: 70px; }
 
-def main():
-    print("--- Iniciando el Constructor de Sitio Web (v5.0 Definitivo) ---")
-    try:
-        with open(DB_FILE,'r',encoding='utf-8') as f: database = json.load(f)
-        with open(LISTS_FILE,'r',encoding='utf-8') as f: listas_curadas = json.load(f)
-        with open(TEMPLATE_FILE,'r',encoding='utf-8') as f: template_html_str = f.read()
-    except FileNotFoundError as e: print(f"ERROR: Falta archivo: {e.filename}."); return
-
-    peliculas_validas = [p for p in database if p.get("imagen_local_verificada")]
-    print(f"Se usarán {len(peliculas_validas)} películas con pósters verificados.")
-    
-    categories = {g: [p for p in peliculas_validas if p.get('genero_especifico') == g] for g in set(p.get('genero_especifico') for p in peliculas_validas if p.get('genero_especifico'))}
-    for d in [MOVIES_DIR,LISTS_DIR,CATEGORIES_DIR]: os.makedirs(d, exist_ok=True)
-    
-    # --- Generar páginas de películas individuales ---
-    print(f"Generando {len(peliculas_validas)} páginas de películas individuales...")
-    article_template_str = re.search(r'<article class="recommendation">.*</article>', template_html_str, re.DOTALL).group(0)
-
-    for movie in peliculas_validas:
-        page_content = str(article_template_str) # Copia fresca de la plantilla para cada película
-        titulo = movie.get("titulo", ""); ano = movie.get("ano", "")
-        platform = movie.get('plataforma',''); display_platform = random.choice(COMMON_PLATFORMS) if any(s in platform.lower() for s in ["no disponible","n/a","desconocido"]) or not platform.strip() else platform
-        puntos_html = "".join([f"<li>{p}</li>" for p in movie.get('puntos_clave', [])])
-        
-        replacements = {
-            "{{IMAGEN_URL}}": f"../{movie.get('ruta_imagen_local','')}", "{{TITULO}}": titulo, "{{ANO}}": str(ano),
-            "{{SINOPSIS_HOOK}}": movie.get('sinopsis_hook',''), "{{SINOPSIS_EXTENDIDA}}": movie.get('sinopsis_extendida',''),
-            "{{PUNTUACION_IMDB}}": movie.get('puntuacion_imdb','N/A'), "{{DURACION}}": movie.get('duracion','N/A'),
-            "{{PLATAFORMA}}": display_platform, "{{PUNTOS_CLAVE}}": f"<ul>{puntos_html}</ul>",
-            "{{IDEA_AFILIADO}}": movie.get('idea_afiliado',''), "{{ENLACE_CATEGORIA}}": movie.get('genero_especifico','')
-        }
-        for ph, val in replacements.items(): page_content = page_content.replace(ph, str(val))
-        
-        final_html = generate_full_html_page(f"<main class='container'>{page_content}</main>", f"Recomendación: {titulo} ({ano})", movie.get('sinopsis_hook',''), "../")
-        with open(os.path.join(MOVIES_DIR, f"{slugify(titulo)}-{ano}.html"), 'w', encoding='utf-8') as f: f.write(final_html)
-
-    # --- Generar Index.html y otras páginas ---
-    print("Generando página de inicio y estáticas...")
-    
-    curated_html = "<h2>Listas Temáticas que No Te Puedes Perder</h2><div class='card-grid'>"
-    for lista in reversed(listas_curadas[-12:]): # Mostramos 12 para simetría
-        url=f"listas/{lista['slug_lista']}.html"; thumb=lista.get('imagen_miniatura_url','imagenes_peliculas/placeholder_default.jpg')
-        curated_html += f"""<div class="card collage-card"><a href="{url}"><div class="image-container"><img src="{thumb}" alt="{lista['titulo_lista']}"></div><h3>{lista['titulo_lista']}</h3></a></div>"""
-    curated_html += "</div>"
-    
-    latest_html = "<h2>Últimas Recomendaciones Añadidas</h2><div class='card-grid'>"
-    for movie in reversed(peliculas_validas[-12:]):
-        url=f"peliculas/{slugify(movie.get('titulo'))}-{movie.get('ano')}.html";poster=movie.get('ruta_imagen_local')
-        latest_html += f"""<div class="card"><a href="{url}"><div class="image-container"><img src="{poster}" alt="Póster de {movie.get('titulo')}"></div><h3>{movie.get('titulo')} ({movie.get('ano')})</h3></a></div>"""
-    latest_html += "</div>"
-    
-    index_content = f"{curated_html}{latest_html}"
-    index_html = generate_full_html_page(f"<main class='container'>{index_content}</main>", "Mi Guía Streaming", "Encuentra las mejores recomendaciones de películas y series.", "")
-    with open(os.path.join(OUTPUT_DIR, 'index.html'), 'w', encoding='utf-8') as f: f.write(index_html)
-    
-    # Aquí puedes añadir la lógica para generar las páginas de Categorías y Contacto de forma similar
-    # para que también tengan el estilo correcto.
-
-    print("\n--- ¡PROCESO COMPLETADO! ---")
-
-if __name__ == "__main__":
-    main()
+/* --- Responsive --- */
+@media (max-width: 768px) {
+    .container { margin: 15px; padding: 20px; }
+    .card-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
