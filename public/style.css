@@ -34,9 +34,9 @@
 
 .card .image-container {
     width: 100%;
+    aspect-ratio: 2 / 3; /* Proporción de póster vertical por defecto */
     background-color: #1c1c1c;
-    /* Proporción de póster vertical por defecto (2:3) */
-    aspect-ratio: 2 / 3;
+    overflow: hidden;
 }
 
 /* A los collages específicamente les damos la proporción 16:9 */
@@ -60,5 +60,5 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 60px; /* Altura mínima para títulos largos */
+    min-height: 60px;
 }
