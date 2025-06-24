@@ -57,6 +57,7 @@ body {
     background-color: var(--primary-color);
     padding: 10px 0;
     text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .navbar ul {
@@ -108,8 +109,7 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* --- INICIO DEL BLOQUE CORREGIDO: CUADRÍCULA DE MINIATURAS --- */
-
+/* --- Cuadrícula de Miniaturas para Homepage --- */
 .thumbnail-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -169,11 +169,32 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 60px; /* Altura mínima para títulos que ocupan dos líneas */
+    min-height: 60px;
 }
 
-/* --- FIN DEL BLOQUE CORREGIDO --- */
-
+/* --- Páginas de Listas y Categorías --- */
+.movie-list-detailed {
+    list-style: none;
+    padding: 0;
+}
+.movie-list-detailed li {
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+.movie-list-detailed a {
+    display: flex;
+    align-items: flex-start;
+    text-decoration: none;
+    color: var(--text-color);
+}
+.movie-list-detailed img {
+    width: 92px;
+    height: 138px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 4px;
+}
 
 /* --- Footer --- */
 .footer {
