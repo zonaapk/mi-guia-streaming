@@ -1,4 +1,4 @@
-/* --- ESTILOS PARA LA CUADRÍCULA DE MINIATURAS (v2.1 CORREGIDO) --- */
+/* --- ESTILOS PARA LA CUADRÍCULA DE MINIATURAS (v2.2 Definitivo) --- */
 
 .thumbnail-grid {
     display: grid;
@@ -34,10 +34,9 @@
 
 .card .image-container {
     width: 100%;
-    aspect-ratio: 2 / 3; /* Proporción de póster por defecto */
-    overflow: hidden;
-    border-bottom: 3px solid #007bff;
     background-color: #1c1c1c;
+    /* Proporción de póster vertical por defecto (2:3) */
+    aspect-ratio: 2 / 3;
 }
 
 /* A los collages específicamente les damos la proporción 16:9 */
@@ -57,8 +56,9 @@
     margin: 0;
     font-size: 1rem;
     text-align: center;
-    flex-grow: 1;
+    flex-grow: 1; 
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 60px; /* Altura mínima para títulos largos */
 }
